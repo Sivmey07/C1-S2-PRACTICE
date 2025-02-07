@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+        }
+        #taskContainer {
+          margin-top: 40px;
+          width: 400px;
+        }
+
+      </style>
+      
+</head>
+<body>
+    <h1>Task List</h1>
+    <!-- Add a container for the tasks -->
+    <div id="taskContainer"></div>
+
+    <script>
+        function displayTasks(tasks) {
+            const container = document.getElementById("taskContainer");
+
+            // Clear previous tasks
+            container.innerHTML = "";
+
+            // Iterate through the tasks and create elements
+            tasks.forEach(task => {
+                const taskElement = document.createElement("div");
+                taskElement.textContent = task.description;
+                taskElement.style.padding = "10px";
+                taskElement.style.margin = "5px 0";
+                taskElement.style.color = "white";
+                taskElement.style.fontWeight = "bold";
+
+                // Apply styles based on priority
+                if (task.priority === 1) {
+                    taskElement.style.backgroundColor = "red";
+                } else if (task.priority === 0) {
+                    taskElement.style.backgroundColor = "grey";
+                }
+
+                // Append the task to the container
+                container.appendChild(taskElement);
+            });
+        }
+
+        let tasks = [
+            { description: "Task 1", priority:1},
+            { description: "Task 2", priority:0},
+            { description: "Task 3", priority:1}
+        ];
+
+        displayTasks(tasks);
+    
+    </script>
+</body>
+</html>

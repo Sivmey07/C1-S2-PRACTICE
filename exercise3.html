@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px auto;
+            max-width: 800px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .form-section {
+            width: 40%;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input {
+            border-radius: 30px;
+        }
+
+        button {
+            background-color: #2c84d8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1d5ea8;
+        }
+
+        .filter-buttons button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .task-list {
+            width: 50%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .high-priority {
+            background-color: red;
+        }
+
+        .low-priority {
+            background-color: grey;
+        }
+
+        .task {
+            padding: 15px;
+            width: 100%;
+            display: flex; 
+            align-items: center; 
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            gap: 10px; 
+        }
+
+        .task span {
+            flex-grow: 1; /* Take up remaining space */
+            text-align: left;
+        }
+
+        .task button {
+            background-color: white;
+            color: black;
+            font-weight: bold;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: auto;
+            width: 60px; 
+            height: 30px;
+            font-size: 14px; 
+            text-align: center;
+        }
+
+        .task button:hover {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Section -->
+        <div class="form-section">
+            <form id="taskForm">
+                <label for="taskInput">Task:</label>
+                <input type="text" id="taskInput" placeholder="Enter a new task" required>
+                <label for="priority">Priority:</label>
+                <select id="priority" required>
+                    <option value="1">High</option>
+                    <option value="0">Low</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+
+            <div class="filter-buttons">
+                <button onclick="filterTasks('all')">Show all tasks</button>
+                <button onclick="filterTasks('important')">Show only the important tasks</button>
+                <button onclick="filterTasks('not-important')">Show the tasks that are not important</button>
+            </div>
+        </div>
+
+        <!-- Task List Section -->
+        <div class="task-list" id="taskList">
+            <!-- Tasks will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        let tasks = [
+            { description: "Do laundry", priority: 1 },
+            { description: "Review JS syntax", priority: 1 },
+            { description: "Work on OOP course", priority: 1 },
+            { description: "Sleep", priority: 0 },
+        ]; // Pre-defined tasks
+
+        // Add a new task
+        document.getElementById("taskForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const taskInput = document.getElementById("taskInput").value.trim();
+            const priority = document.getElementById("priority").value;
+
+            if (taskInput !== "") {
+                tasks.push({ description: taskInput, priority: parseInt(priority) });
+                document.getElementById("taskForm").reset(); // Clear the form
+                displayTasks(tasks); 
+            }
+        });
+
+        // Display tasks on the DOM
+        function displayTasks(taskArray) {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = ""; // Clear old tasks
+
+            taskArray.forEach((task, index) => {
+                const taskDiv = document.createElement("div");
+                taskDiv.classList.add("task");
+                taskDiv.classList.add(task.priority === 1 ? "high-priority" : "low-priority");
+                taskDiv.innerHTML = `
+                    <span>${task.description}</span>
+                    <button onclick="deleteTask(${index})">Delete</button>
+                `;
+                taskList.appendChild(taskDiv);
+            });
+        }
+
+        // Filter tasks based on priority
+        function filterTasks(filterType) {
+            if (filterType === "important") {
+                const importantTasks = tasks.filter(task => task.priority === 1);
+                displayTasks(importantTasks);
+            } else if (filterType === "not-important") {
+                const notImportantTasks = tasks.filter(task => task.priority === 0);
+                displayTasks(notImportantTasks);
+            } else {
+                displayTasks(tasks); 
+            }
+        }
+
+        // Delete a task
+        function deleteTask(index) {
+            tasks.splice(index, 1); // Remove the task from the array
+            displayTasks(tasks); // Refresh the task list
+        }
+
+        // Initial display of tasks
+        displayTasks(tasks);
+    </script>
+</body>
+</html>

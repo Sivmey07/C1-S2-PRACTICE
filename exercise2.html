@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            width: 400px;
+            margin: 10px 0;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input {
+            border-color: black;
+            border-radius: 30px;
+
+        }
+
+        select {
+            border-color: black;
+        }
+        button {
+            background-color: #2c84d8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1d5ea8;
+        }
+
+        #taskContainer {
+          margin-top: 40px;
+          width: 400px;
+        }
+    </style>
+    
+</head>
+<body>
+    
+    <div class="form-section">
+        <form id="taskForm">
+            <h1>Task List</h1>
+            <label for ="task"> Task:</label> 
+            <input type="text" id="username" name="username"><br><br>
+            <label for ="tag"> Priority:</label>
+            <select name="option">
+                <option>High</option>
+                <option>Low</option>
+            </select> <br><br>  
+            <button> Add task</button>    
+        </form>
+    </div>
+
+    
+    <!-- Add a container for the tasks -->
+    <div id="taskContainer"></div>
+
+    <script>
+        function displayTasks(tasks) {
+            const container = document.getElementById("taskContainer");
+
+            // Clear previous tasks
+            container.innerHTML = "";
+
+            // repeat through the tasks and create elements
+            tasks.forEach(task => {
+                const taskElement = document.createElement("div");
+                taskElement.textContent = task.description;
+                taskElement.style.padding = "10px";
+                taskElement.style.margin = "5px 0";
+                taskElement.style.color = "white";
+                taskElement.style.fontWeight = "bold";
+
+                // Apply styles based on priority
+                if (task.priority === 1) {
+                    taskElement.style.backgroundColor = "red";
+                } else if (task.priority === 0) {
+                    taskElement.style.backgroundColor = "grey";
+                }
+
+                // Append the task to the container
+                container.appendChild(taskElement);
+            });
+        }
+
+        let tasks = [
+            { description: "Task 1", priority:1},
+            { description: "Task 2", priority:0},
+            { description: "Task 3", priority:1}
+        ];
+
+        displayTasks(tasks);
+    
+    </script>
+</body>
+</html>
