@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Task Manager</title>
     <style>
         body {
-          font-family: Arial, sans-serif;
-          margin: 20px;
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
 
         label {
@@ -28,12 +28,12 @@
         input {
             border-color: black;
             border-radius: 30px;
-
         }
 
         select {
             border-color: black;
         }
+
         button {
             background-color: #2c84d8;
             color: white;
@@ -47,40 +47,40 @@
         }
 
         #taskContainer {
-          margin-top: 40px;
-          width: 400px;
+            margin-top: 40px;
+            width: 400px;
         }
     </style>
-    
 </head>
 <body>
-    
     <div class="form-section">
         <form id="taskForm">
             <h1>Task List</h1>
-            <label for ="task"> Task:</label> 
-            <input type="text" id="username" name="username"><br><br>
-            <label for ="tag"> Priority:</label>
-            <select name="option">
-                <option>High</option>
-                <option>Low</option>
-            </select> <br><br>  
-            <button> Add task</button>    
+            <label for="task">Task:</label>
+            <input type="text" id="task" name="task"><br><br>
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority">
+                <option value="1">High</option>
+                <option value="0">Low</option>
+            </select><br><br>
+            <button type="submit">Add task</button>
         </form>
     </div>
 
-    
     <!-- Add a container for the tasks -->
     <div id="taskContainer"></div>
 
     <script>
-        function displayTasks(tasks) {
-            const container = document.getElementById("taskContainer");
+        let tasks = [
+            { description: "Task 1", priority: 1 },
+            { description: "Task 2", priority: 0 },
+            { description: "Task 3", priority: 1 }
+        ];
 
-            // Clear previous tasks
+        function displayTasks() {
+            const container = document.getElementById("taskContainer");
             container.innerHTML = "";
 
-            // repeat through the tasks and create elements
             tasks.forEach(task => {
                 const taskElement = document.createElement("div");
                 taskElement.textContent = task.description;
@@ -88,27 +88,27 @@
                 taskElement.style.margin = "5px 0";
                 taskElement.style.color = "white";
                 taskElement.style.fontWeight = "bold";
-
-                // Apply styles based on priority
-                if (task.priority === 1) {
-                    taskElement.style.backgroundColor = "red";
-                } else if (task.priority === 0) {
-                    taskElement.style.backgroundColor = "grey";
-                }
-
-                // Append the task to the container
+                taskElement.style.backgroundColor = task.priority === 1 ? "red" : "grey";
                 container.appendChild(taskElement);
             });
         }
 
-        let tasks = [
-            { description: "Task 1", priority:1},
-            { description: "Task 2", priority:0},
-            { description: "Task 3", priority:1}
-        ];
+        document.getElementById("taskForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const taskDescription = document.getElementById("task").value.trim();
+            const taskPriority = document.getElementById("priority").value;
 
-        displayTasks(tasks);
-    
+            if (taskDescription === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            tasks.push({ description: taskDescription, priority: parseInt(taskPriority) });
+            displayTasks();
+            document.getElementById("taskForm").reset();
+        });
+
+        displayTasks();
     </script>
 </body>
 </html>
